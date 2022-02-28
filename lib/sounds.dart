@@ -27,6 +27,24 @@ class DyingScream extends StatelessWidget{
   }
 }
 
+class StartScream {
+  static AudioCache cache = AudioCache();
+  static int numOfStartScreams=6;
+
+  String selectstartscreamfn(){
+    String fn;
+    var rnd=Random();
+    int i=rnd.nextInt(numOfStartScreams)+1;
+    fn = 'startscream'+i.toString()+'.mp3';
+    return fn;
+  }
+
+  playStartScream() {
+    cache.play(selectstartscreamfn());
+  }
+}
+
+
 class ZombieMoan {
   static AudioPlayer player = AudioPlayer();
   static AudioCache cache = AudioCache(fixedPlayer: player);

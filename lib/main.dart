@@ -7,9 +7,9 @@ import './myzombies.dart';
 import './sounds.dart';
 
 //TO DO:
-//1) Add fear sound on drag start
-//2) Prevent draggable from being dragged offscreen
-//3) Add flutter_launcher_icons
+//1) Prevent draggable from being dragged offscreen
+//2) Add flutter_launcher_icons
+//3) Fade to showRestart - https://api.flutter.dev/flutter/widgets/FadeTransition-class.html
 
 void main() {
   runApp(const MyApp());
@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Center(
-              child: Text('You only lasted ' + secondsAlive.toString() + ' seconds',
+              child: Text('You lasted only ' + secondsAlive.toString() + ' seconds',
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Colors.white, fontSize: 40,),
               ),
@@ -154,6 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 feedback: human(controller: humanController),
                 childWhenDragging: Container(),
                 onDragStarted: () {
+                  StartScream().playStartScream();
                   isDragging=true;
                 },
                 onDragUpdate: (dragDetails) {
