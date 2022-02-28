@@ -4,11 +4,12 @@ import './globals.dart';
 import './screensize.dart';
 import './myhuman.dart';
 import './myzombies.dart';
+import './sounds.dart';
 
 //TO DO:
 //1) Add fear sound on drag start
-//2) Add scream in agony sound upon eaten in showRestart
-//3) Prevent draggable from being dragged offscreen
+//2) Prevent draggable from being dragged offscreen
+//3) Add flutter_launcher_icons
 
 void main() {
   runApp(const MyApp());
@@ -19,12 +20,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Run From The Zombies',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
@@ -62,6 +60,9 @@ class _MyHomePageState extends State<MyHomePage> {
       //Human already has been eaten, don't update state
     } else {
       if (isDragging) {
+        //Only call this while dragging
+        //Otherwise the feedback widget doesn't exist in tree
+        //and throws exception
         humanController.humanNeedsUpdateCallback(true);
       }
       setState(() {
@@ -81,6 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Stack showRestart() {
   return Stack(
       children: [
+        const DyingScream(),
         const Image(
           image: AssetImage('assets/blood.png'),
           fit: BoxFit.cover,

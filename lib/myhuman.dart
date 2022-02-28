@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './globals.dart';
 //TO DO:
 //1) Add continuous running sound while dragging
+//2) Rotate running human image in direction of movement
 
 class HumanController {
   late Function(bool) humanNeedsUpdateCallback;

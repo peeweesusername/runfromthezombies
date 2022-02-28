@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import './globals.dart';
 
 //TO DO:
-//1) Add continuous zombie moans
+//1) Make zombie move in straight line towards human
 //2) Animate the zombie image
 
 class zombie extends StatefulWidget {
@@ -56,17 +56,17 @@ class _zombie extends State<zombie> {
 
   @override
   void initState() {
-    timer = Timer.periodic(
-        const Duration(milliseconds: 50), (Timer t) => updateZombiePosition());
     _x = widget.startX;
     _y = widget.startY;
     isEaten=false;
+    timer = Timer.periodic(
+        const Duration(milliseconds: 50), (Timer t) => updateZombiePosition());
     super.initState();
   }
 
   @override
   void dispose() {
-    timer.cancel();
+     timer.cancel();
     super.dispose();
   }
 
@@ -75,11 +75,15 @@ class _zombie extends State<zombie> {
     return  Positioned(
       left: _x,
       top: _y,
-      child: const Image(
-        image: AssetImage('assets/zombie.png'),
-        width: gimageSize,
-        height: gimageSize,
+      child: Stack(
+        children: const [
+          Image(
+            image: AssetImage('assets/zombie.png'),
+            width: gimageSize,
+            height: gimageSize,
           )
-      );
+        ],
+      ),
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import './screensize.dart';
 import '/myzombie.dart';
+import './sounds.dart';
 
 class zombies extends StatefulWidget {
   zombies({Key? key, required this.notifyEaten, required this.getHumanPosition}) : super(key: key);
@@ -15,6 +16,7 @@ class zombies extends StatefulWidget {
 class _zombies extends State<zombies> {
   late Timer timer;
   late screenCorner theCorner;
+  final zombieMoan = ZombieMoan();
 
   List<Widget> zombiesList = List<Widget>.empty(growable: true);
 
@@ -65,6 +67,7 @@ class _zombies extends State<zombies> {
   @override
   void initState() {
     theCorner = screenCorner.upperRight;
+    zombieMoan.playmaster();
     timer = Timer.periodic(
         const Duration(milliseconds: 1000), (Timer t) => addMoreZombiesAtEdge());
     super.initState();
@@ -72,6 +75,7 @@ class _zombies extends State<zombies> {
 
   @override
   void dispose() {
+    zombieMoan.pause();
     timer.cancel();
     super.dispose();
   }
