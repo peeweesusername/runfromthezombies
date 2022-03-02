@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:async';
 import './globals.dart';
 import './screensize.dart';
@@ -7,11 +8,28 @@ import './myzombies.dart';
 import './sounds.dart';
 
 //TO DO:
-//1) Prevent draggable from being dragged offscreen
-//2) Add flutter_launcher_icons
-//3) Fade to showRestart - https://api.flutter.dev/flutter/widgets/FadeTransition-class.html
+//1) Feature: Prevent draggable from being dragged offscreen
+//2) Feature: Fade to showRestart - https://api.flutter.dev/flutter/widgets/FadeTransition-class.html
+//4) Bug: On first start, human can sometimes be located at 0,0. Suspect initialization race condition
+//- Try adding this call to main before runApp(): WidgetsFlutterBinding.ensureInitialized()
+//- See this: https://github.com/flutter/flutter/issues/25827
+//- Work around: 1: put values of 100 for _x/_y in initstate. 2: screencenter returns 100,100 if it gets zero
+//5) Feature: Do not display restart button until dying scream is completed
+//- Modify DyingScream to be like StartScream.
+//- Add method bool doneScreaming() that returns false if(cache.fixedPlayer?.state == PlayerState.PLAYING) else true
+//- At top of showRestart method add call DyingScream().playDyingScream()
+//- For restart button widget, add check of if (DyingScream().doneScreaming()) to setstate and display TextButton() otherwise empty Container()
+//6) Feature: Animate gif of zombie. See https://insider.office.com/en-us/blog/export-animated-gifs-transparent-backgrounds
+//7) Feature: Rotate/flip zombie/human images in direction of motion
+//8) Feature: Transparent background on animated gifs zombie/human. See https://insider.office.com/en-us/blog/export-animated-gifs-transparent-backgrounds
+//9) Feature: Fade into showRestart screen
+//10) Feature: modify icons to show full image, not circumscribed image
 
 void main() {
+  //Prevent screen rotation
+  //App is portrait orientation only
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const MyApp());
 }
 
