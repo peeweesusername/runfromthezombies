@@ -26,6 +26,14 @@ List<double> screenCenter(BuildContext context) {
   List<double> center=List<double>.empty(growable: true);
   center.add((MediaQuery.of(context).size.width.roundToDouble())/2.0);
   center.add((MediaQuery.of(context).size.height.roundToDouble())/2.0);
+  //System sometimes not ready at launch and can return 0.0
+  //In this case, return 100,100
+  if(center[0]==0.0) {
+    center[0]=100.0;
+  }
+  if(center[1]==0.0) {
+    center[1]=100.0;
+  }
   return center;
 }
 

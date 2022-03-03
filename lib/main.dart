@@ -139,6 +139,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
+    _x = 100.0;
+    _y = 100.0;
     isEaten=false;
     isDragging=false;
     isNotBuilt=true;
