@@ -10,10 +10,6 @@ import './sounds.dart';
 //TO DO:
 //1) Feature: Prevent draggable from being dragged offscreen
 //2) Feature: Fade to showRestart - https://api.flutter.dev/flutter/widgets/FadeTransition-class.html
-//4) Bug: On first start, human can sometimes be located at 0,0. Suspect initialization race condition
-//- Try adding this call to main before runApp(): WidgetsFlutterBinding.ensureInitialized()
-//- See this: https://github.com/flutter/flutter/issues/25827
-//- Work around: 1: put values of 100 for _x/_y in initstate. 2: screencenter returns 100,100 if it gets zero
 //5) Feature: Do not display restart button until dying scream is completed
 //- Modify DyingScream to be like StartScream.
 //- Add method bool doneScreaming() that returns false if(cache.fixedPlayer?.state == PlayerState.PLAYING) else true
