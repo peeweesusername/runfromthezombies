@@ -57,6 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
   late bool isNotBuilt;
   late Timer timer;
   late int secondsAlive;
+  final myStartScream = StartScream();
+  final myDyingScream = DyingScream();
 
   void restart() {
     setState(() {
@@ -94,9 +96,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Stack showRestart() {
-  return Stack(
+    myStartScream.stop();
+    myDyingScream.playScream();
+    return Stack(
       children: [
-        const DyingScream(),
         const Image(
           image: AssetImage('assets/blood.png'),
           fit: BoxFit.cover,
@@ -123,8 +126,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: const Text('Tap To Try Again', textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 20,),
                 ),
               onPressed: () {
+                myDyingScream.stop();
                 restart();
-              },
+                },
               ),
             ),
           ],
@@ -136,7 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     _x = 100.0;
-    _y = 100.0;
+    _y = 00.0;
     isEaten=false;
     isDragging=false;
     isNotBuilt=true;
@@ -170,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 feedback: human(controller: humanController),
                 childWhenDragging: Container(),
                 onDragStarted: () {
-                  StartScream().playStartScream();
+                  myStartScream.playStartScream();
                   isDragging=true;
                 },
                 onDragUpdate: (dragDetails) {

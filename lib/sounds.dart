@@ -1,10 +1,9 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
-class DyingScream extends StatelessWidget{
-  const DyingScream({Key? key}) : super(key: key);
-
+class DyingScream {
+  static AudioPlayer player = AudioPlayer();
+  static AudioCache cache = AudioCache(fixedPlayer: player);
   static int numOfScreams=8;
 
   String selectscreamfn(){
@@ -16,14 +15,20 @@ class DyingScream extends StatelessWidget{
   }
 
   playScream() {
-    AudioCache player = AudioCache();
     String soundfn = selectscreamfn();
-    player.play(soundfn);
+    cache.play(soundfn);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(child: playScream());
+  bool isStillPlaying() {
+    return ((cache.fixedPlayer?.state == PlayerState.PLAYING));
+  }
+
+  pause() {
+    cache.fixedPlayer?.pause();
+  }
+
+  stop() {
+    cache.fixedPlayer?.stop();
   }
 }
 
@@ -32,7 +37,7 @@ class StartScream {
   static AudioCache cache = AudioCache(fixedPlayer: player);
   static int numOfStartScreams=6;
 
-  String selectstartscreamfn(){
+  static String selectstartscreamfn(){
     String fn;
     var rnd=Random();
     int i=rnd.nextInt(numOfStartScreams)+1;
@@ -60,7 +65,7 @@ class ZombieMoan {
   static AudioCache cache = AudioCache(fixedPlayer: player);
   static int numOfMoans=7;
 
-  String selectmoanfn(){
+  static String selectmoanfn(){
     String fn;
     var rnd=Random();
     int i=rnd.nextInt(numOfMoans)+1;
