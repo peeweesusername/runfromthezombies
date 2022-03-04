@@ -18,7 +18,7 @@ import './sounds.dart';
 //6) Feature: Animate gif of zombie. See https://insider.office.com/en-us/blog/export-animated-gifs-transparent-backgrounds
 //7) Feature: Rotate/flip zombie/human images in direction of motion
 //8) Feature: Transparent background on animated gifs zombie/human. See https://insider.office.com/en-us/blog/export-animated-gifs-transparent-backgrounds
-//9) Feature: Fade into showRestart screen
+//9) Feature: Fade into showRestart screen.  https://api.flutter.dev/flutter/widgets/AnimatedCrossFade-class.html
 //10) Feature: modify icons to show full image, not circumscribed image
 
 void main() {
@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final myStartScream = StartScream();
   final myDyingScream = DyingScream();
 
-  void restart() {
+  void restartGame() {
     setState(() {
       _x = screenCenter(context)[0]-adjustCenterPosition;
       _y = screenCenter(context)[1]-adjustCenterPosition;
@@ -127,12 +127,50 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               onPressed: () {
                 myDyingScream.stop();
-                restart();
+                restartGame();
                 },
               ),
             ),
           ],
         ),
+      ],
+    );
+  }
+
+  Stack showGamePlay(){
+    return Stack(
+      children: <Widget>[
+        Positioned(
+          left: _x,
+          top: _y,
+          child: Draggable(
+            child: const Image(
+              image: AssetImage('assets/stick-figure-standing.png'),
+              width: gimageSize,
+              height: gimageSize,
+            ),
+            feedback: human(controller: humanController),
+            childWhenDragging: Container(),
+            onDragStarted: () {
+              myStartScream.playStartScream();
+              isDragging=true;
+            },
+            onDragUpdate: (dragDetails) {
+              if (isEaten) {
+                //Human already has been eaten, don't update position
+              } else {
+                setState(() {
+                  _x += dragDetails.delta.dx;
+                  _y += dragDetails.delta.dy;
+                });
+              }
+            },
+            onDraggableCanceled: (velocity, offset) {
+              isDragging=false;
+            },
+          ),
+        ),
+        zombies(notifyEaten: notifyEaten, getHumanPosition: getHumanPosition),
       ],
     );
   }
@@ -160,41 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     return Scaffold(
       body: Center(
-        child: isEaten? showRestart() : Stack(
-          children: <Widget>[
-            Positioned(
-              left: _x,
-              top: _y,
-              child: Draggable(
-                child: const Image(
-                  image: AssetImage('assets/stick-figure-standing.png'),
-                  width: gimageSize,
-                  height: gimageSize,
-                ),
-                feedback: human(controller: humanController),
-                childWhenDragging: Container(),
-                onDragStarted: () {
-                  myStartScream.playStartScream();
-                  isDragging=true;
-                },
-                onDragUpdate: (dragDetails) {
-                  if (isEaten) {
-                    //Human already has been eaten, don't update position
-                  } else {
-                    setState(() {
-                      _x += dragDetails.delta.dx;
-                      _y += dragDetails.delta.dy;
-                    });
-                  }
-                },
-                onDraggableCanceled: (velocity, offset) {
-                  isDragging=false;
-                },
-              ),
-            ),
-            zombies(notifyEaten: notifyEaten, getHumanPosition: getHumanPosition),
-          ],
-        ),
+        child: isEaten? showRestart() : showGamePlay(),
       ),
     );
   }
