@@ -4,7 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 class DyingScream {
   static AudioPlayer player = AudioPlayer();
   static AudioCache cache = AudioCache(fixedPlayer: player);
-  static int numOfScreams=8;
+  static int numOfScreams=7;
 
   String selectscreamfn(){
     String fn;
